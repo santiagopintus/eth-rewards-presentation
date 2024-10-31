@@ -1,7 +1,7 @@
-import BlocksRender from "@src/components/BlocksRender";
+import Chart from "@src/components/Charts";
 import DateSelection from "@src/components/DateSelection";
 import Hero from "@src/components/Hero";
-import Loading from "@src/components/loading";
+import Loading from "@src/components/Loading";
 import { getServerSideBlocks } from "@src/utils/Utils";
 
 const Home = async () => {
@@ -11,7 +11,7 @@ const Home = async () => {
     <main>
       <Hero />
       <DateSelection />
-      {blocks ? <BlocksRender blocks={blocks} /> : <Loading />}
+      {blocks ? <Chart data={blocks} /> : <Loading />}
     </main>
   );
 };
