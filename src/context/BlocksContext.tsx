@@ -23,7 +23,7 @@ export const BlocksProvider = ({ children }: { children: React.ReactNode }) => {
   // }, [dateSpan]);
 
   return (
-    <BlocksContext.Provider value={{ blocks, setDateSpan }}>
+    <BlocksContext.Provider value={{ blocks, dateSpan, setDateSpan }}>
       {children}
     </BlocksContext.Provider>
   );

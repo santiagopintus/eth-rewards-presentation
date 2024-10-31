@@ -1,17 +1,32 @@
 import { fetchEthRewards } from "@src/hooks/useFetch";
 
-export const getISODate = (dateString: string) => {
-  const date = new Date(dateString);
+/** Returns the date in ISO format or the current date if no date is provided
+ * @param dateString - The date in string format
+ * @returns The date in ISO format
+ */
+export const getISODate = (dateString?: string) => {
+  const date = new Date(dateString || new Date());
   return date.toISOString();
 };
 
-export const getTimeAgo = (days: number) => {
+/**
+ * Calculates the date that was a specified number of days before the current date.
+ * @param days - The number of days to go back from today.
+ * @returns The calculated Date object
+ */
+export const getDateDaysAgo = (days: number) => {
   const date = new Date();
   date.setDate(date.getDate() - days);
-  return date.toISOString();
+  return date;
 };
 
-export const getServerSideBlocks = async () => {
+/**
+ * Automatically fetches the blocks data from the API. Since it runs on the server side, it reads env vars directly from the process.env object.
+ * @param since - The date in ISO format to start fetching from
+ * @param till - The date in ISO format to stop fetching at
+ * @returns The time ago in a readable format
+ */
+export const getServerSideBlocks = async (since: string, till: string) => {
   const { NEXT_PUBLIC_API_BASE_URL, NEXT_PUBLIC_API_KEY } = process.env;
 
   if (!NEXT_PUBLIC_API_BASE_URL || !NEXT_PUBLIC_API_KEY) {
@@ -21,7 +36,7 @@ export const getServerSideBlocks = async () => {
   return fetchEthRewards(
     NEXT_PUBLIC_API_BASE_URL,
     NEXT_PUBLIC_API_KEY,
-    getTimeAgo(30),
-    new Date().toISOString()
+    since,
+    till
   );
 };

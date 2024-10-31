@@ -5,7 +5,7 @@ import React from "react";
 type DateSelectorBtnProps = {
   setDateSpan: React.Dispatch<React.SetStateAction<DateSpan | null>>;
   text: string;
-  since: string;
+  since: Date;
 };
 
 const DateSelectorBtn = ({
@@ -14,8 +14,11 @@ const DateSelectorBtn = ({
   since,
 }: DateSelectorBtnProps) => {
   // till //TODAY AS ISO
-  const till = new Date().toISOString();
-  return <Button onClick={() => setDateSpan({ since, till })}>{text}</Button>;
+  return (
+    <Button onClick={() => setDateSpan({ since, till: new Date() })}>
+      {text}
+    </Button>
+  );
 };
 
 export default DateSelectorBtn;

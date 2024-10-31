@@ -6,11 +6,12 @@ export type Block = {
 };
 
 export type DateSpan = {
-  since: string;
-  till: string;
+  since: Date;
+  till: Date;
 };
 
 export interface BlocksContextProps {
   blocks: Block[] | null;
+  dateSpan: DateSpan | null;
   setDateSpan: React.Dispatch<React.SetStateAction<DateSpan | null>>;
 }
