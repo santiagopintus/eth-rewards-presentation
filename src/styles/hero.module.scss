@@ -1,0 +1,12 @@
+@import "globals/vars";
+@import "globals/mixins";
+
+.heroContainer {
+  background-image: $mainGradient;
+  @include flex-center;
+  padding: 20px;
+  h1,
+  p {
+    color: white;
+  }
+}

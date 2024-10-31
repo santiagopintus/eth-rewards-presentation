@@ -1,7 +1,9 @@
+import Hero from "@src/components/Hero";
+
 const Home = () => {
   return (
     <main>
-      <h1>EtherRewards</h1>
+      <Hero />
     </main>
   );
 };

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 // import "@fontsource/roboto/500.css";
 // import "@fontsource/roboto/700.css";
 import { CssBaseline } from "@mui/material";
+import "@styles/main.scss";
 
 export const metadata: Metadata = {
   title: "EtherRewards",
