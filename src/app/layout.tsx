@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-// import "@fontsource/roboto/300.css";
-// import "@fontsource/roboto/400.css";
-// import "@fontsource/roboto/500.css";
-// import "@fontsource/roboto/700.css";
 import { CssBaseline } from "@mui/material";
 import "@styles/main.scss";
+import { PublicEnvProvider } from "next-runtime-env";
+import { BlocksProvider } from "@src/context/BlocksContext";
 
 export const metadata: Metadata = {
   title: "EtherRewards",
@@ -25,7 +23,9 @@ export default function RootLayout({
       </head>
       <body>
         <CssBaseline />
-        {children}
+        <PublicEnvProvider>
+          <BlocksProvider>{children}</BlocksProvider>
+        </PublicEnvProvider>
       </body>
     </html>
   );
