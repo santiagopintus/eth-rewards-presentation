@@ -1,9 +1,13 @@
 "use client";
+import { useTheme } from "@mui/material";
+import { fetchEthRewards } from "@src/hooks/useFetch";
+import { useRuntimeEnv } from "@src/hooks/useRuntimeEnv";
 import {
   Block,
   BlocksContextProps,
   DateSpan,
 } from "@src/model/blocks.interface";
+import { getDateDaysAgo } from "@src/utils/Utils";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const BlocksContext = createContext<BlocksContextProps>(
@@ -11,19 +15,40 @@ const BlocksContext = createContext<BlocksContextProps>(
 );
 
 export const BlocksProvider = ({ children }: { children: React.ReactNode }) => {
+  const isDarkMode = useTheme().palette.mode === "dark";
   const [blocks, setBlocks] = useState<Block[] | null>(null);
-  const [dateSpan, setDateSpan] = useState<DateSpan | null>(null);
+  /* Default date span is 30 days ago until now */
+  const [dateSpan, setDateSpan] = useState<DateSpan | null>({
+    since: getDateDaysAgo(30),
+    till: new Date(),
+  });
 
-  // useEffect(() => {
-  //   if (dateSpan) {
-  //     const { since, till } = dateSpan;
-  //     const res = useFetch(since, till);
-  //     console.log(res);
-  //   }
-  // }, [dateSpan]);
+  const { NEXT_PUBLIC_API_BASE_URL, NEXT_PUBLIC_API_KEY } = useRuntimeEnv();
+
+  const refreshBlocks = async () => {
+    if (dateSpan && NEXT_PUBLIC_API_BASE_URL && NEXT_PUBLIC_API_KEY) {
+      setBlocks(null);
+      setBlocks(
+        (await fetchEthRewards(
+          NEXT_PUBLIC_API_BASE_URL,
+          NEXT_PUBLIC_API_KEY,
+          dateSpan.since.toISOString(),
+          dateSpan.till.toISOString()
+        )) || null
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (dateSpan !== null) {
+      refreshBlocks();
+    }
+  }, [dateSpan]);
 
   return (
-    <BlocksContext.Provider value={{ blocks, dateSpan, setDateSpan }}>
+    <BlocksContext.Provider
+      value={{ blocks, dateSpan, setDateSpan, isDarkMode }}
+    >
       {children}
     </BlocksContext.Provider>
   );

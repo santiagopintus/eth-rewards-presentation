@@ -1,24 +1,22 @@
-import Chart from "@src/components/Charts";
+import ChartContainer from "@src/components/ChartContainer";
 import DateSelection from "@src/components/DateSelection";
 import Hero from "@src/components/Hero";
 import Loading from "@src/components/Loading";
-import {
-  getISODate,
-  getServerSideBlocks,
-  getDateDaysAgo,
-} from "@src/utils/Utils";
+import { getServerSideBlocks, getDateDaysAgo } from "@src/utils/Utils";
 
 const Home = async () => {
   const blocks = await getServerSideBlocks(
     getDateDaysAgo(30).toISOString(),
-    getISODate()
+    new Date().toISOString()
   );
 
   return (
     <main>
       <Hero />
-      <DateSelection />
-      {blocks ? <Chart data={blocks} /> : <Loading />}
+      <div className="container">
+        <DateSelection />
+        {blocks ? <ChartContainer data={blocks} /> : <Loading />}
+      </div>
     </main>
   );
 };

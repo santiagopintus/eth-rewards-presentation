@@ -1,4 +1,6 @@
+import { useBlocksContext } from "@src/context/BlocksContext";
 import * as d3 from "d3";
+import { use, useEffect, useRef, useState } from "react";
 
 type LinePlotProps = {
   yData: number[];
@@ -14,36 +16,58 @@ type LinePlotProps = {
 export default function LinePlot({
   yData,
   xData,
-  width = 640,
   height = 400,
   marginTop = 20,
-  marginRight = 20,
+  marginRight = 30,
   marginBottom = 20,
-  marginLeft = 20,
+  marginLeft = 70,
 }: LinePlotProps) {
-  const x = d3.scaleLinear(
-    [0, yData.length - 1],
-    [marginLeft, width - marginRight]
-  );
+  const [width, setWidth] = useState(window.innerWidth * 0.8);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const { isDarkMode } = useBlocksContext();
+  const plotColor = isDarkMode ? "white" : "black";
+  const xTicksInterval = Math.ceil(xData.length / 10) || 1;
+  const xTicksValues = xData.filter((_, i) => i % xTicksInterval === 0);
+
+  const x = d3.scalePoint(xData, [marginLeft, width - marginRight]);
   const y = d3.scaleLinear(
     [0, d3.max(yData) as number],
     [height - marginTop, marginBottom]
   );
 
-  const line = d3.line((d, i) => x(i), y);
+  const line = d3.line((_, i) => x(xData[i]) as number, y);
+
+  /* DRAWING AXIS */
+  useEffect(() => {
+    if (!svgRef.current) return;
+    const svg = d3.select(svgRef.current);
+
+    svg.selectAll("g.axis").remove();
+    /* Draw x axis */
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(x).tickValues(xTicksValues));
+    /* Draw y axis */
+    svg
+      .append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y));
+  }, [svgRef]);
+
   return (
-    <svg width={width} height={height}>
+    <svg height={height} ref={svgRef} style={{ width: "100%" }}>
       <path
         fill="none"
-        stroke="currentColor"
+        stroke={plotColor}
         strokeWidth="1.5"
-        d={line(yData) == null ? undefined : (line(yData) as string)}
+        d={line(yData) || undefined}
       />
-      <g fill="white" stroke="currentColor" strokeWidth="1.5">
-        {yData.map((d, i) => (
-          <circle key={i} cx={x(i)} cy={y(d)} r="2.5" />
+      {/* <g fill={plotColor} stroke={plotColor} strokeWidth="1.5">
+        {yData.map((_, i) => (
+          <circle key={i} cx={x(i)} cy={y(d)} r="3" />
         ))}
-      </g>
+      </g> */}
     </svg>
   );
 }

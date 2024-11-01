@@ -1,4 +1,19 @@
+/* COLORS */
 $primaryColor: #263247;
-$ligherPrimaryColor: #18416d;
+$primaryColorLighter: #18416d;
 $accentColor: #18c2df;
-$mainGradient: linear-gradient(to right, $ligherPrimaryColor, $primaryColor);
+$black: #0c1016;
+$blackLighter: #141b25;
+
+/* GRADIENTS */
+$mainGradient: linear-gradient(to right, $primaryColorLighter, $primaryColor);
+$darkGradient: linear-gradient(to right, $black, $blackLighter, $black);
+
+/* BREAKPOINTS */
+$mobileMin: 383px;
+$tabletMin: 576px;
+$desktopMin: 768px;
+$largeMin: 1200px;
+
+/* BORDERS */
+$borderRadius: 8px;

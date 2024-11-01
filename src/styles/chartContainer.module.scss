@@ -1,0 +1,14 @@
+@import "globals/vars";
+@import "globals/mixins";
+
+.chartContainer {
+  width: 100%;
+}
+
+.dateSelectionOptions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 16px 0;
+  gap: 10px;
+}

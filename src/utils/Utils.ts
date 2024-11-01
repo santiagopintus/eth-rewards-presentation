@@ -1,14 +1,5 @@
 import { fetchEthRewards } from "@src/hooks/useFetch";
 
-/** Returns the date in ISO format or the current date if no date is provided
- * @param dateString - The date in string format
- * @returns The date in ISO format
- */
-export const getISODate = (dateString?: string) => {
-  const date = new Date(dateString || new Date());
-  return date.toISOString();
-};
-
 /**
  * Calculates the date that was a specified number of days before the current date.
  * @param days - The number of days to go back from today.
