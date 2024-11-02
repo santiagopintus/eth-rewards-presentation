@@ -1,0 +1,19 @@
+@import "globals/vars";
+@import "globals/mixins";
+
+.focusedBlockDataContainer {
+  padding: 16px;
+  border-radius: 8px;
+
+  .date,
+  .reward {
+    margin: 0;
+  }
+  .date {
+    font-size: 14px;
+  }
+  .reward {
+    font-size: 26px;
+    font-weight: bold;
+  }
+}

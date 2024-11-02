@@ -6,6 +6,7 @@ import { useBlocksContext } from "@src/context/BlocksContext";
 import { Skeleton } from "@mui/material";
 import s from "@styles/chartContainer.module.scss";
 import AdditionalInfo from "./AdditionalInfo";
+import FocusedBlockData from "./FocusedBlockData";
 
 type ChartProps = {
   data?: Block[];
@@ -14,6 +15,7 @@ type ChartProps = {
 const ChartContainer = ({ data }: ChartProps) => {
   const [blocks, setBlocks] = useState<Block[] | null>(data || null); //Data is passed from page as the initial state
   const { blocks: ctxtBlocks } = useBlocksContext();
+  const [focusedData, setFocusedData] = useState<Block | null>(null);
 
   useEffect(() => {
     setBlocks(ctxtBlocks);
@@ -21,8 +23,16 @@ const ChartContainer = ({ data }: ChartProps) => {
 
   return (
     <>
+      <FocusedBlockData
+        reward={focusedData?.reward}
+        date={focusedData?.date.date}
+      />
       <div className={s.chartContainer}>
-        {!blocks ? <ChartSkeleton /> : <LinePlot data={blocks} />}
+        {!blocks ? (
+          <ChartSkeleton />
+        ) : (
+          <LinePlot data={blocks} setFocusedData={setFocusedData} />
+        )}
       </div>
       <AdditionalInfo data={blocks} />
     </>

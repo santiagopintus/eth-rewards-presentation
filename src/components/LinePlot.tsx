@@ -1,113 +1,130 @@
 "use client";
 import * as d3 from "d3";
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { Block } from "@src/model/blocks.interface";
-import { getXTicksValues } from "@src/utils/Plot";
 import { useThemeContext } from "@src/context/ThemeContext";
-import { datePickerToolbarClasses } from "@mui/x-date-pickers";
+import {
+  createGuideLine,
+  createLabel,
+  drawAxes,
+  drawDots,
+  handleGuidelinesPositions,
+  highlightApropriateDot,
+  moveGuideLine,
+  updateLabels,
+} from "@src/utils/Plot";
+
+export type Measures = {
+  H: number;
+  R: number;
+  L: number;
+  T: number;
+  B: number;
+};
 
 type LinePlotProps = {
   data: Block[];
-  width?: number;
-  height?: number;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
+  setFocusedData: React.Dispatch<SetStateAction<Block | null>>;
+  measures?: Measures;
+  dotRadius?: number;
 };
 
 export default function LinePlot({
   data,
-  height = 400,
-  marginTop = 20,
-  marginRight = 30,
-  marginBottom = 20,
-  marginLeft = 70,
+  setFocusedData,
+  measures = {
+    H: 400, //HEIGHT
+    R: 30, //RIGHT
+    L: 70, //LEFT
+    T: 30, //TOP
+    B: 20, //BOTTOM
+  },
+  dotRadius = 3,
 }: LinePlotProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const { isDarkMode } = useThemeContext();
   const plotColor = isDarkMode ? "#00ffff" : "black";
-  const [width, setWidth] = useState(
+  const guideLinesColor = isDarkMode ? "#fff" : "#000";
+
+  const [width] = useState(
     typeof window !== "undefined" ? window.innerWidth * 0.8 : 0
   );
 
   useEffect(() => {
     if (!svgRef.current) return;
+    const svgPlot = d3.select(svgRef.current);
 
-    const svg = d3.select(svgRef.current);
-
+    /* Time scale for x-axis */
     const parsedDates = data.map((d) => new Date(d.date.date));
     const x = d3
       .scaleTime()
       .domain([d3.min(parsedDates) as Date, d3.max(parsedDates) as Date])
-      .range([marginLeft, width - marginRight]);
+      .range([measures.L, width - measures.R]);
 
+    /* Linear scale for y-axis */
     const y = d3
       .scaleLinear(
         [0, d3.max(data, (d) => d.reward) as number],
-        [height - marginBottom, marginTop]
+        [measures.H - measures.B, measures.T]
       )
       .nice();
 
-    // Draw x-axis
-    svg
-      .append("g")
-      .attr("transform", `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(x));
-
-    // Draw y-axis
-    svg
-      .append("g")
-      .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y).ticks(height / 40))
-      .call((g) => g.select(".domain").remove())
-      .call((g) =>
-        g
-          .selectAll(".tick line")
-          .clone()
-          .attr("x2", width - marginLeft - marginRight)
-          .attr("stroke-opacity", 0.1)
-      )
-      .call((g) =>
-        g
-          .append("text")
-          .attr("x", -marginLeft)
-          .attr("y", 10)
-          .attr("fill", "currentColor")
-          .attr("text-anchor", "start")
-          .text("Daily Rewards (USD)")
-      );
+    drawAxes(svgPlot, x, y, measures, width);
 
     const line = d3
       .line<Block>()
       .x((d) => x(new Date(d.date.date)) as number)
       .y((d) => y(d.reward));
 
-    // Draw line
-    svg
+    // Draw main line
+    svgPlot
       .append("path")
       .datum(data)
       .attr("fill", "none")
       .attr("stroke", plotColor)
       .attr("stroke-width", 1.5)
       .attr("d", line(data));
+
+    // Initialize guide lines for X and Y axes
+    const vertGuideLine = createGuideLine(svgPlot, guideLinesColor);
+    const horGuideLine = createGuideLine(svgPlot, guideLinesColor);
+
+    //Draw dots
+    const dots = drawDots(svgPlot, data, x, y, dotRadius, plotColor);
+
+    //Draw date labels
+    const rewardLabel = createLabel(svgPlot, plotColor);
+    const dateLabel = createLabel(svgPlot, plotColor);
+
+    // Listen to mousemove event on the SVG element
+    svgPlot.on("mousemove", (e) => {
+      const [mouseX, mouseY] = d3.pointer(e);
+      setFocusedData(highlightApropriateDot(mouseX, dots, x));
+      handleGuidelinesPositions(
+        mouseX,
+        mouseY,
+        measures,
+        width,
+        vertGuideLine,
+        horGuideLine
+      );
+    });
+    svgPlot.on("mouseleave", () => {
+      highlightApropriateDot(-Infinity, dots, x);
+      setFocusedData(null);
+      horGuideLine.style("opacity", 0);
+      vertGuideLine.style("opacity", 0);
+    });
   }, [
     data,
     width,
-    height,
-    marginTop,
-    marginRight,
-    marginBottom,
-    marginLeft,
+    measures.H,
+    measures.T,
+    measures.R,
+    measures.B,
+    measures.L,
     plotColor,
   ]);
 
-  return (
-    <svg
-      ref={svgRef}
-      width={width}
-      height={height}
-      style={{ maxWidth: "100%", height: "auto" }}
-    />
-  );
+  return <svg ref={svgRef} width={width} height={measures.H} />;
 }

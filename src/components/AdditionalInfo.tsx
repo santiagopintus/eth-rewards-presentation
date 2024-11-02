@@ -1,18 +1,12 @@
 import { Skeleton } from "@mui/material";
 import { Block } from "@src/model/blocks.interface";
+import { currencyFormatterUSD } from "@src/utils/Utils";
 import s from "@styles/additionalInfo.module.scss";
 
 const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
   const smallSkeleton = (
     <Skeleton variant="text" width="50px" sx={{ display: "inline-block" }} />
   );
-
-  // Currency formatter for USD
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-  });
 
   return (
     <div className={s.additionalInfo}>
@@ -22,7 +16,7 @@ const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
         <li>
           Promedio diario:{" "}
           {data
-            ? currencyFormatter.format(
+            ? currencyFormatterUSD.format(
                 data.reduce((a, b) => a + b.reward, 0) / data.length
               )
             : smallSkeleton}
@@ -30,13 +24,17 @@ const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
         <li>
           Mínima:{" "}
           {data
-            ? currencyFormatter.format(Math.min(...data.map((d) => d.reward)))
+            ? currencyFormatterUSD.format(
+                Math.min(...data.map((d) => d.reward))
+              )
             : smallSkeleton}
         </li>
         <li>
           Máximo:{" "}
           {data
-            ? currencyFormatter.format(Math.max(...data.map((d) => d.reward)))
+            ? currencyFormatterUSD.format(
+                Math.max(...data.map((d) => d.reward))
+              )
             : smallSkeleton}
         </li>
       </ul>

@@ -28,6 +28,9 @@ export const ThemeContextProvider = ({
           secondary: {
             main: isDarkMode ? "#fc3c64" : "#9540fc",
           },
+          background: {
+            default: isDarkMode ? "#101728" : "#fafafa",
+          },
         },
       }),
     [isDarkMode]
