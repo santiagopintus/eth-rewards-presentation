@@ -42,6 +42,7 @@ const DateSelection = () => {
       <div className={s.dateSelectionOptions}>
         {dateSelectionOptions.map((option) => (
           <DateSelectorBtn
+            key={option.label}
             setDateSpan={setDateSpan}
             text={option.label}
             since={getDateDaysAgo(option.value)}

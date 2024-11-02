@@ -1,13 +1,21 @@
 /* COLORS */
-$primaryColor: #263247;
-$primaryColorLighter: #18416d;
-$accentColor: #18c2df;
-$black: #0c1016;
-$blackLighter: #141b25;
+$primaryColor: #1f41bb;
+$primaryColorLighter: #dce1e7;
+$accentColor: #fafafa;
+$black: #212121;
+$blackLighter: #333333;
 
 /* GRADIENTS */
 $mainGradient: linear-gradient(to right, $primaryColorLighter, $primaryColor);
 $darkGradient: linear-gradient(to right, $black, $blackLighter, $black);
+
+/* DARKMODE */
+$dkBackground: #101728;
+$dkText: #fff;
+$dkPrimary: #1f41bb;
+$dkSecondary: #fc3c64;
+$dkAccent: #00ffff;
+$dkAccent2: #9540fc;
 
 /* BREAKPOINTS */
 $mobileMin: 383px;

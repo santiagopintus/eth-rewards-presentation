@@ -1,5 +1,4 @@
 "use client";
-import { useTheme } from "@mui/material";
 import { fetchEthRewards } from "@src/hooks/useFetch";
 import { useRuntimeEnv } from "@src/hooks/useRuntimeEnv";
 import {
@@ -15,7 +14,6 @@ const BlocksContext = createContext<BlocksContextProps>(
 );
 
 export const BlocksProvider = ({ children }: { children: React.ReactNode }) => {
-  const isDarkMode = useTheme().palette.mode === "dark";
   const [blocks, setBlocks] = useState<Block[] | null>(null);
   /* Default date span is 30 days ago until now */
   const [dateSpan, setDateSpan] = useState<DateSpan | null>({
@@ -46,14 +44,10 @@ export const BlocksProvider = ({ children }: { children: React.ReactNode }) => {
   }, [dateSpan]);
 
   return (
-    <BlocksContext.Provider
-      value={{ blocks, dateSpan, setDateSpan, isDarkMode }}
-    >
+    <BlocksContext.Provider value={{ blocks, dateSpan, setDateSpan }}>
       {children}
     </BlocksContext.Provider>
   );
 };
 
-export const useBlocksContext = () => {
-  return useContext(BlocksContext);
-};
+export const useBlocksContext = () => useContext(BlocksContext);

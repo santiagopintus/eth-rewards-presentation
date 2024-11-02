@@ -2,11 +2,14 @@
 @import "globals/mixins";
 
 .heroContainer {
-  background-image: $mainGradient;
   @include flex-center;
   padding: 20px;
-  h1,
-  p {
-    color: white;
+
+  .logoContainer {
+    max-width: 100%;
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 }
