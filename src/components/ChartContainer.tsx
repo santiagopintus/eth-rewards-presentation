@@ -1,25 +1,16 @@
 "use client";
 import { Block } from "@src/model/blocks.interface";
 import LinePlot from "./LinePlot";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useBlocksContext } from "@src/context/BlocksContext";
-import { Skeleton } from "@mui/material";
+import { CircularProgress, Skeleton } from "@mui/material";
 import s from "@styles/chartContainer.module.scss";
 import AdditionalInfo from "./AdditionalInfo";
 import FocusedBlockData from "./FocusedBlockData";
 
-type ChartProps = {
-  data?: Block[];
-};
-
-const ChartContainer = ({ data }: ChartProps) => {
-  const [blocks, setBlocks] = useState<Block[] | null>(data || null); //Data is passed from page as the initial state
-  const { blocks: ctxtBlocks } = useBlocksContext();
+const ChartContainer = () => {
+  const { blocks } = useBlocksContext();
   const [focusedData, setFocusedData] = useState<Block | null>(null);
-
-  useEffect(() => {
-    setBlocks(ctxtBlocks);
-  }, [ctxtBlocks]);
 
   return (
     <>
@@ -28,8 +19,8 @@ const ChartContainer = ({ data }: ChartProps) => {
         date={focusedData?.date.date}
       />
       <div className={s.chartContainer}>
-        {!blocks ? (
-          <ChartSkeleton />
+        {blocks === null ? (
+          <ChartLoading />
         ) : (
           <LinePlot data={blocks} setFocusedData={setFocusedData} />
         )}
@@ -39,8 +30,20 @@ const ChartContainer = ({ data }: ChartProps) => {
   );
 };
 
-const ChartSkeleton = () => {
-  return <Skeleton variant="rounded" height={"100%"} width={"100%"} />;
+const ChartLoading = () => {
+  return (
+    <>
+      <div className={s.spinnerContainer}>
+        <CircularProgress className={s.spinner} size={100} />
+      </div>
+      <Skeleton
+        variant="rounded"
+        height={410}
+        width={"100%"}
+        sx={{ backgroundColor: "#19243f" }}
+      ></Skeleton>
+    </>
+  );
 };
 
 export default ChartContainer;

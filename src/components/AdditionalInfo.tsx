@@ -15,7 +15,7 @@ const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
         <li>Total de bloques: {data?.length || smallSkeleton}</li>
         <li>
           Promedio diario:{" "}
-          {data
+          {data?.length
             ? currencyFormatterUSD.format(
                 data.reduce((a, b) => a + b.reward, 0) / data.length
               )
@@ -23,7 +23,7 @@ const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
         </li>
         <li>
           Mínima:{" "}
-          {data
+          {data?.length
             ? currencyFormatterUSD.format(
                 Math.min(...data.map((d) => d.reward))
               )
@@ -31,7 +31,7 @@ const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
         </li>
         <li>
           Máximo:{" "}
-          {data
+          {data?.length
             ? currencyFormatterUSD.format(
                 Math.max(...data.map((d) => d.reward))
               )

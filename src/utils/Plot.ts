@@ -27,7 +27,7 @@ export const drawAxes = (
       g //Add horizontal lines
         .selectAll(".tick line")
         .clone()
-        .attr("x2", width - measures.L - measures.R)
+        .attr("x2", width - measures.L)
         .attr("stroke-opacity", 0.1)
     )
     .call((g) =>
@@ -110,7 +110,7 @@ export const createGuideLine = (svgPlot: Plot, linesColor: string) =>
     .style("opacity", 0); // Initially hidden
 
 const getSafeX = (mouseX: number, measures: Measures, width: number) =>
-  Math.max(measures.L, Math.min(mouseX, width - measures.R));
+  Math.max(measures.L, Math.min(mouseX, width));
 
 const getSafeY = (mouseY: number, measures: Measures) =>
   Math.max(measures.T, Math.min(mouseY, measures.H - measures.B));
@@ -136,7 +136,7 @@ export const handleGuidelinesPositions = (
     measures.H - measures.B
   );
   /* Update horizontal guideline postion */
-  moveGuideLine(horGuideLine, measures.L, horYpos, width - measures.R, horYpos);
+  moveGuideLine(horGuideLine, measures.L, horYpos, width, horYpos);
 };
 
 /** Updates the position of the guide line according to the given coordinates */

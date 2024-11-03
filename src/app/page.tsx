@@ -5,17 +5,17 @@ import Loading from "@src/components/Loading";
 import { getServerSideBlocks, getDateDaysAgo } from "@src/utils/Utils";
 
 const Home = async () => {
-  const blocks = await getServerSideBlocks(
-    getDateDaysAgo(30).toISOString(),
-    new Date().toISOString()
-  );
+  // const blocks = await getServerSideBlocks(
+  //   getDateDaysAgo(30).toISOString(),
+  //   new Date().toISOString()
+  // );
 
   return (
     <main>
       <Hero />
       <div className="container">
         <DateSelection />
-        {blocks ? <ChartContainer data={blocks} /> : <Loading />}
+        <ChartContainer data={[]} />
       </div>
     </main>
   );

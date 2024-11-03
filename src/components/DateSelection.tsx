@@ -10,10 +10,10 @@ import dayjs, { Dayjs } from "dayjs";
 import s from "@styles/dateSelection.module.scss";
 
 const DateSelection = () => {
-  const ctxt = useBlocksContext();
+  const { dateSpan, setBlocks, setDateSpan } = useBlocksContext();
   const defaultSince = getDateDaysAgo(30);
   const defaultTill = new Date();
-  const { dateSpan, setDateSpan } = ctxt;
+
   const dateSelectionOptions = [
     { label: "1M", value: 30 },
     { label: "3M", value: 90 },
@@ -32,6 +32,7 @@ const DateSelection = () => {
   };
 
   const onDateChange = (newDate: Dayjs | null, type: keyof DateSpan) => {
+    setBlocks(null);
     if (newDate) {
       setNewDate(newDate.toDate(), type);
     }

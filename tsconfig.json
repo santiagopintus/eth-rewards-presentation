@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,10 +22,18 @@
       }
     ],
     "paths": {
-      "@src/*": ["./src/*"],
-      "@comp/*": ["./src/components/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@images/*": ["./public/*"]
+      "@src/*": [
+        "./src/*"
+      ],
+      "@comp/*": [
+        "./src/components/*"
+      ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+      "@images/*": [
+        "./public/*"
+      ]
     }
   },
   "include": [
@@ -29,7 +41,10 @@
     "**/*.ts",
     "**/*.tsx",
     "build/types/**/*.ts",
-    "__tests__/FocusedBlockData.test.tsx"
+    "__tests__/FocusedBlockData.test.tsx",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

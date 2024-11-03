@@ -16,11 +16,12 @@ const FocusedBlockData = ({
   });
   const { isDarkMode } = useThemeContext();
 
+  const cardWidth = 250;
   const getCardPosition = (e: MouseEvent) => {
     const offsetX = 50;
     let newX = e.clientX + offsetX;
-    if (newX + 200 > window.innerWidth) {
-      newX = e.clientX - 200 - offsetX;
+    if (newX + cardWidth > window.innerWidth) {
+      newX = e.clientX - cardWidth - offsetX;
     }
     return { x: newX, y: e.clientY };
   };

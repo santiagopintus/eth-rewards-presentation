@@ -47,7 +47,7 @@ export default function LinePlot({
   const guideLinesColor = isDarkMode ? "#fff" : "#000";
 
   const [width] = useState(
-    typeof window !== "undefined" ? window.innerWidth * 0.8 : 0
+    typeof window !== "undefined" ? Math.min(window.innerWidth * 0.8, 1200) : 0
   );
 
   useEffect(() => {
@@ -59,7 +59,8 @@ export default function LinePlot({
     const x = d3
       .scaleTime()
       .domain([d3.min(parsedDates) as Date, d3.max(parsedDates) as Date])
-      .range([measures.L, width - measures.R]);
+      .range([measures.L, width - measures.R])
+      .nice();
 
     /* Linear scale for y-axis */
     const y = d3
@@ -91,10 +92,6 @@ export default function LinePlot({
 
     //Draw dots
     const dots = drawDots(svgPlot, data, x, y, dotRadius, plotColor);
-
-    //Draw date labels
-    const rewardLabel = createLabel(svgPlot, plotColor);
-    const dateLabel = createLabel(svgPlot, plotColor);
 
     // Listen to mousemove event on the SVG element
     svgPlot.on("mousemove", (e) => {
