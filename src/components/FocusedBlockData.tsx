@@ -41,6 +41,7 @@ const FocusedBlockData = ({
 
   return (
     <div
+      id="focusedBlockDataContainer"
       className={s.focusedBlockDataContainer}
       style={{
         position: "absolute",

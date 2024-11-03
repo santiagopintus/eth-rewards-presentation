@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useMemo } from "react";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { ThemeContextProps } from "@src/model/blocks.interface";
 
-const ThemeContext = createContext<ThemeContextProps>({
+export const ThemeContext = createContext<ThemeContextProps>({
   isDarkMode: true,
   toggleTheme: () => {},
 });
