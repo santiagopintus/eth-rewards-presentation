@@ -7,7 +7,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateSpan } from "@src/model/blocks.interface";
 import dayjs, { Dayjs } from "dayjs";
-import s from "@styles/chartContainer.module.scss";
+import s from "@styles/dateSelection.module.scss";
 
 const DateSelection = () => {
   const ctxt = useBlocksContext();
@@ -48,15 +48,20 @@ const DateSelection = () => {
             since={getDateDaysAgo(option.value)}
           />
         ))}
+        <div className={s.datePickersContainer}></div>
         {/* Since date */}
         <DatePicker
+          label="Desde"
           value={dayjs(dateSpan?.since || defaultSince)}
           onChange={(d) => onDateChange(d, "since")}
+          sx={{ width: 150 }}
         />
         {/* Until date */}
         <DatePicker
+          label="Hasta"
           value={dayjs(dateSpan?.till || defaultTill)}
           onChange={(d) => onDateChange(d, "till")}
+          sx={{ width: 150 }}
         />
       </div>
     </LocalizationProvider>

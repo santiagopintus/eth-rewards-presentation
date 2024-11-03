@@ -15,7 +15,7 @@ const DateSelectorBtn = ({
   // till //TODAY AS ISO
   return (
     <Button
-      sx={{ fontWeight: 700 }}
+      sx={{ fontWeight: 700, height: "100%" }}
       variant="contained"
       onClick={() => setDateSpan({ since, till: new Date() })}
     >
