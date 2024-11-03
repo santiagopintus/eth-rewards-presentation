@@ -1,7 +1,7 @@
 "use client";
 import { Block } from "@src/model/blocks.interface";
 import LinePlot from "./LinePlot";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import { useBlocksContext } from "@src/context/BlocksContext";
 import { CircularProgress, Skeleton } from "@mui/material";
 import s from "@styles/chartContainer.module.scss";

@@ -5,13 +5,10 @@ import { Block } from "@src/model/blocks.interface";
 import { useThemeContext } from "@src/context/ThemeContext";
 import {
   createGuideLine,
-  createLabel,
   drawAxes,
   drawDots,
   handleGuidelinesPositions,
   highlightApropriateDot,
-  moveGuideLine,
-  updateLabels,
 } from "@src/utils/Plot";
 
 export type Measures = {

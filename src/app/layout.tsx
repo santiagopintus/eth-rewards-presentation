@@ -17,6 +17,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        {/* FAVICON SVG */}
+        <link
+          rel="shortcut icon"
+          href="./eth-isologo.svg"
+          type="image/svg+xml"
+        />
       </head>
       <body>
         <CssBaseline />

@@ -22,7 +22,6 @@ const DateSelection = () => {
   ];
 
   const setNewDate = (selectedDate: Date, type: keyof DateSpan) => {
-    /* Clear blocks from context to trigger loading*/
     const newDateSpan = {
       ...dateSpan,
       [type]: selectedDate,
@@ -32,6 +31,7 @@ const DateSelection = () => {
   };
 
   const onDateChange = (newDate: Dayjs | null, type: keyof DateSpan) => {
+    /* Clear blocks from context to trigger loading*/
     setBlocks(null);
     if (newDate) {
       setNewDate(newDate.toDate(), type);

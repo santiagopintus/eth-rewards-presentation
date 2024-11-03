@@ -1,16 +1,17 @@
 @import "globals/vars";
 @import "globals/mixins";
 
-.dateSelectionOptions {
+.dateSelectionOptions,
+.datePickersContainer {
   display: flex;
+  margin: 24px 0;
+}
+.dateSelectionOptions {
   flex-wrap: wrap;
   align-items: center;
-  margin: 16px 0;
   gap: 10px;
 }
 
 .datePickersContainer {
-  margin: 16px 0;
-  display: flex;
   max-width: 100%;
 }

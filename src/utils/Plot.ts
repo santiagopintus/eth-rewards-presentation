@@ -34,9 +34,10 @@ export const drawAxes = (
       g //Add y-axis label
         .append("text")
         .attr("x", -measures.L)
-        .attr("y", 10)
+        .attr("y", 15)
         .attr("fill", "currentColor")
         .attr("text-anchor", "start")
+        .attr("font-size", 16)
         .text("Daily Rewards (USD)")
     );
 };
@@ -140,7 +141,7 @@ export const handleGuidelinesPositions = (
 };
 
 /** Updates the position of the guide line according to the given coordinates */
-export const moveGuideLine = (
+const moveGuideLine = (
   guideLine: d3.Selection<SVGLineElement, unknown, null, undefined>,
   x1: number,
   y1: number,
@@ -153,55 +154,4 @@ export const moveGuideLine = (
     .attr("y1", y1)
     .attr("y2", y2)
     .style("opacity", 1);
-};
-
-/************ DATA LABELS************/
-
-/** Creates the svg elements for the data labels
- * @param plot - The plot svg element to append the elements to
- * @param labelColor - The color of the background
- */
-export const createLabel = (plot: Plot, labelColor: string) => {
-  // Crea la etiqueta de texto
-  const label = plot
-    .append("text")
-    .attr("fill", "white") // Color del texto
-    .attr("font-size", 16)
-    /* ADD SHADOW without spread*/
-    .style("filter", "box-shadow(0 0 5px white)")
-    .style("opacity", 0); // Inicialmente oculto
-
-  return label; // Devuelve ambos elementos
-};
-
-type Label = d3.Selection<SVGTextElement, unknown, null, undefined>;
-export const updateLabels = (
-  data: Block | null,
-  rewardLabel: Label,
-  dateLabel: Label,
-  measures: Measures,
-  width: number,
-  mouseX: number,
-  mouseY: number
-) => {
-  /* Mostrar la recompensa si hay un punto cercano */
-  if (data) {
-    const xPos = getSafeX(mouseX, measures, width);
-    const yPos = getSafeY(mouseY, measures);
-    const formatDate = d3.timeFormat("%d %b %Y");
-
-    rewardLabel
-      .attr("x", measures.L - 10)
-      .attr("y", yPos)
-      .attr("text-anchor", "end")
-      .text(`${currencyFormatterUSD.format(data.reward)}`)
-      .style("opacity", 1);
-    dateLabel
-      .attr("x", xPos - 50)
-      .attr("y", measures.H - measures.B)
-      .text(formatDate(new Date(data.date.date)))
-      .style("opacity", 1);
-  } else {
-    rewardLabel.style("opacity", 0);
-  }
 };
