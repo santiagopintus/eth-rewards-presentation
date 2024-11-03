@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import Hero from "@src/components/Hero";
 import Link from "next/link";
 
-const Error = async () => {
+const Error = () => {
   return (
     <main>
       <Hero />

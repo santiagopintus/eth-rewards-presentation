@@ -7,9 +7,15 @@ import {
   DateSpan,
 } from "@src/model/blocks.interface";
 import { getDateDaysAgo } from "@src/utils/Utils";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-const BlocksContext = createContext<BlocksContextProps>(
+export const BlocksContext = createContext<BlocksContextProps>(
   {} as BlocksContextProps
 );
 
@@ -23,7 +29,7 @@ export const BlocksProvider = ({ children }: { children: React.ReactNode }) => {
 
   const { NEXT_PUBLIC_API_BASE_URL, NEXT_PUBLIC_API_KEY } = useRuntimeEnv();
 
-  const refreshBlocks = async () => {
+  const refreshBlocks = useCallback(async () => {
     if (dateSpan && NEXT_PUBLIC_API_BASE_URL && NEXT_PUBLIC_API_KEY) {
       setBlocks(null);
       setBlocks(
@@ -35,13 +41,13 @@ export const BlocksProvider = ({ children }: { children: React.ReactNode }) => {
         )) || null
       );
     }
-  };
+  }, [dateSpan, NEXT_PUBLIC_API_BASE_URL, NEXT_PUBLIC_API_KEY]);
 
   useEffect(() => {
     if (dateSpan !== null) {
       refreshBlocks();
     }
-  }, [dateSpan]);
+  }, [dateSpan, refreshBlocks]);
 
   return (
     <BlocksContext.Provider

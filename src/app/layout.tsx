@@ -6,7 +6,7 @@ import { BlocksProvider } from "@src/context/BlocksContext";
 import { ThemeContextProvider } from "@src/context/ThemeContext";
 
 export const metadata: Metadata = {
-  title: "EtherRewards",
+  title: "EthRewards",
   description:
     "Sigue las recompensas de bloques de Ethereum en USD a lo largo del tiempo. Gráficos interactivos y análisis de tendencias al alcance de tu mano.",
 };

@@ -52,6 +52,8 @@ const DateSelection = () => {
         <div className={s.datePickersContainer}></div>
         {/* Since date */}
         <DatePicker
+          maxDate={dayjs(new Date())}
+          minDate={dayjs(new Date("2015-08-01"))}
           label="Desde"
           value={dayjs(dateSpan?.since || defaultSince)}
           onChange={(d) => onDateChange(d, "since")}
@@ -59,6 +61,8 @@ const DateSelection = () => {
         />
         {/* Until date */}
         <DatePicker
+          maxDate={dayjs(new Date())}
+          minDate={dayjs(dateSpan?.since || defaultSince)}
           label="Hasta"
           value={dayjs(dateSpan?.till || defaultTill)}
           onChange={(d) => onDateChange(d, "till")}

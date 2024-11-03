@@ -1,6 +1,13 @@
 "use client";
 import * as d3 from "d3";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Block } from "@src/model/blocks.interface";
 import { useThemeContext } from "@src/context/ThemeContext";
 import {
@@ -84,6 +91,7 @@ export default function LinePlot({
       .attr("d", line(data));
 
     // Initialize guide lines for X and Y axes
+
     const vertGuideLine = createGuideLine(svgPlot, guideLinesColor);
     const horGuideLine = createGuideLine(svgPlot, guideLinesColor);
 
@@ -118,7 +126,17 @@ export default function LinePlot({
     measures.B,
     measures.L,
     plotColor,
+    dotRadius,
+    guideLinesColor,
+    setFocusedData,
   ]);
 
-  return <svg ref={svgRef} width={width} height={measures.H} />;
+  return (
+    <svg
+      data-testid="linePlot"
+      ref={svgRef}
+      width={width}
+      height={measures.H}
+    />
+  );
 }
