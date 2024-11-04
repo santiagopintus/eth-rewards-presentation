@@ -1,5 +1,5 @@
 "use client";
-import { Block } from "@src/model/blocks.interface";
+import { Block } from "@src/model/model.interface";
 import LinePlot from "./LinePlot";
 import { useState } from "react";
 import { useBlocksContext } from "@src/context/BlocksContext";

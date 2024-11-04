@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { DateSpan } from "@src/model/blocks.interface";
+import { DateSpan } from "@src/model/model.interface";
 
 type DateSelectorBtnProps = {
   setDateSpan: React.Dispatch<React.SetStateAction<DateSpan | null>>;

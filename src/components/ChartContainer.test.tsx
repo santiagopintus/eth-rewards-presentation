@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { expect, test } from "vitest";
 import ChartContainer from "./ChartContainer";
 import { BlocksContext } from "@src/context/BlocksContext";
-import { Block } from "@src/model/blocks.interface";
+import { Block } from "@src/model/model.interface";
 
 test("ChartContainer; renders a Skeleton when data is null", () => {
   const { container } = render(
@@ -30,7 +30,7 @@ test("ChartContainer; renders chart when data is provided", () => {
     { reward: 2000, date: { date: "2024-10-24" } },
   ];
 
-  const { container } = render(
+  render(
     <BlocksContext.Provider
       value={{
         blocks: mockData,

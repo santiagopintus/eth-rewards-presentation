@@ -5,7 +5,7 @@ import DateSelectorBtn from "./DateSelectorBtn";
 import { getDateDaysAgo } from "@src/utils/Utils";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateSpan } from "@src/model/blocks.interface";
+import { DateSpan } from "@src/model/model.interface";
 import dayjs, { Dayjs } from "dayjs";
 import s from "@styles/dateSelection.module.scss";
 

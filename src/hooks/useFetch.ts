@@ -1,4 +1,4 @@
-import { Block } from "@src/model/blocks.interface";
+import { Block } from "@src/model/model.interface";
 
 export const fetchEthRewards = async (
   url: string,

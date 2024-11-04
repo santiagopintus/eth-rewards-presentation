@@ -1,7 +1,11 @@
 "use client";
 import { createContext, useContext, useState, useMemo } from "react";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
-import { ThemeContextProps } from "@src/model/blocks.interface";
+
+type ThemeContextProps = {
+  isDarkMode: boolean;
+  toggleTheme: () => void;
+};
 
 export const ThemeContext = createContext<ThemeContextProps>({
   isDarkMode: true,

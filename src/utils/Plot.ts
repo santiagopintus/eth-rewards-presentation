@@ -1,16 +1,51 @@
-import { Measures } from "@src/components/LinePlot";
-import { Block } from "@src/model/blocks.interface";
+import {
+  Block,
+  Dots,
+  GuideLine,
+  Measures,
+  Scales,
+} from "@src/model/model.interface";
 import * as d3 from "d3";
-import { currencyFormatterUSD } from "./Utils";
+import { SetStateAction } from "react";
+import { S } from "vitest/dist/chunks/config.Crbj2GAb.js";
 
 type Plot = d3.Selection<SVGSVGElement, unknown, null, undefined>;
 
+/** Creates the appropriate scales for each axis of the plot according to the given data and measures
+ * @param data - The data to be plotted
+ * @param measures - The measures of the plot
+ */
+export const createScales = (data: Block[], measures: Measures): Scales => {
+  /* Time scale for x-axis */
+  const parsedDates = data.map((d) => new Date(d.date.date));
+  const x = d3
+    .scaleTime()
+    .domain([d3.min(parsedDates) as Date, d3.max(parsedDates) as Date])
+    .range([measures.L, measures.W - measures.R])
+    .nice();
+
+  /* Linear scale for y-axis */
+  const y = d3
+    .scaleLinear(
+      [0, d3.max(data, (d) => d.reward) as number],
+      [measures.H - measures.B, measures.T]
+    )
+    .nice();
+
+  return { x, y };
+};
+
+/** Draws the x and y axes according to the given measures of the plot
+ * @param plot - The plot selection
+ * @param x - The x scale
+ * @param y - The y scale
+ * @param measures - The measures of the plot
+ */
 export const drawAxes = (
   plot: Plot,
-  x: d3.ScaleTime<number, number, never>,
-  y: d3.ScaleLinear<number, number, never>,
-  measures: Measures,
-  width: number
+  x: Scales["x"],
+  y: Scales["y"],
+  measures: Measures
 ) => {
   // Draw x-axis
   plot
@@ -27,7 +62,7 @@ export const drawAxes = (
       g //Add horizontal lines
         .selectAll(".tick line")
         .clone()
-        .attr("x2", width - measures.L)
+        .attr("x2", measures.W - measures.L)
         .attr("stroke-opacity", 0.1)
     )
     .call((g) =>
@@ -42,11 +77,34 @@ export const drawAxes = (
     );
 };
 
+export const drawLine = (
+  svgPlot: Plot,
+  data: Block[],
+  x: Scales["x"],
+  y: Scales["y"],
+  plotColor: string
+) => {
+  const line = d3
+    .line<Block>()
+    .x((d) => x(new Date(d.date.date)) as number)
+    .y((d) => y(d.reward));
+
+  // Draw main line
+  svgPlot
+    .append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("data-testid", "mainLine")
+    .attr("stroke", plotColor)
+    .attr("stroke-width", 1.5)
+    .attr("d", line(data));
+};
+
 export const drawDots = (
   svgPlot: Plot,
   data: Block[],
-  x: d3.ScaleTime<number, number, never>,
-  y: d3.ScaleLinear<number, number, never>,
+  x: Scales["x"],
+  y: Scales["y"],
   dotRadius: number,
   dotsColor: string
 ) => {
@@ -70,13 +128,8 @@ export const drawDots = (
  */
 export const highlightApropriateDot = (
   mouseX: number,
-  dots: d3.Selection<
-    d3.BaseType | SVGCircleElement,
-    Block,
-    SVGGElement,
-    unknown
-  >,
-  x: d3.ScaleTime<number, number, never>
+  dots: Dots,
+  x: Scales["x"]
 ) => {
   let closestDot: SVGCircleElement | null = null;
   let closestX = -Infinity;
@@ -110,8 +163,8 @@ export const createGuideLine = (svgPlot: Plot, linesColor: string) =>
     .attr("stroke-dasharray", "5, 5")
     .style("opacity", 0); // Initially hidden
 
-const getSafeX = (mouseX: number, measures: Measures, width: number) =>
-  Math.max(measures.L, Math.min(mouseX, width));
+const getSafeX = (mouseX: number, measures: Measures) =>
+  Math.max(measures.L, Math.min(mouseX, measures.W));
 
 const getSafeY = (mouseY: number, measures: Measures) =>
   Math.max(measures.T, Math.min(mouseY, measures.H - measures.B));
@@ -121,12 +174,11 @@ export const handleGuidelinesPositions = (
   mouseX: number,
   mouseY: number,
   measures: Measures,
-  width: number,
-  vertGuideLine: d3.Selection<SVGLineElement, unknown, null, undefined>,
-  horGuideLine: d3.Selection<SVGLineElement, unknown, null, undefined>
+  vertGuideLine: GuideLine,
+  horGuideLine: GuideLine
 ) => {
   /* Avoid going out of plot */
-  const vertXpos = getSafeX(mouseX, measures, width);
+  const vertXpos = getSafeX(mouseX, measures);
   const horYpos = getSafeY(mouseY, measures);
   /* Update vertical guideline postion */
   moveGuideLine(
@@ -137,12 +189,12 @@ export const handleGuidelinesPositions = (
     measures.H - measures.B
   );
   /* Update horizontal guideline postion */
-  moveGuideLine(horGuideLine, measures.L, horYpos, width, horYpos);
+  moveGuideLine(horGuideLine, measures.L, horYpos, measures.W, horYpos);
 };
 
 /** Updates the position of the guide line according to the given coordinates */
 const moveGuideLine = (
-  guideLine: d3.Selection<SVGLineElement, unknown, null, undefined>,
+  guideLine: GuideLine,
   x1: number,
   y1: number,
   x2: number,
@@ -154,4 +206,53 @@ const moveGuideLine = (
     .attr("y1", y1)
     .attr("y2", y2)
     .style("opacity", 1);
+};
+
+export const listenMouseEvents = (
+  svgPlot: Plot,
+  setFocusedData: React.Dispatch<SetStateAction<Block | null>>,
+  measures: Measures,
+  vertGuideLine: GuideLine,
+  horGuideLine: GuideLine,
+  dots: Dots,
+  x: Scales["x"]
+) => {
+  svgPlot.on("mousemove", (e) =>
+    onMouseMove(
+      e,
+      setFocusedData,
+      measures,
+      vertGuideLine,
+      horGuideLine,
+      dots,
+      x
+    )
+  );
+  svgPlot.on("mouseleave", () => {
+    /* Reset guide lines and highlighted dot */
+    highlightApropriateDot(-Infinity, dots, x);
+    setFocusedData(null);
+    horGuideLine.style("opacity", 0);
+    vertGuideLine.style("opacity", 0);
+  });
+};
+
+const onMouseMove = (
+  e: any,
+  setFocusedData: React.Dispatch<SetStateAction<Block | null>>,
+  measures: Measures,
+  vertGuideLine: GuideLine,
+  horGuideLine: GuideLine,
+  dots: Dots,
+  x: Scales["x"]
+) => {
+  const [mouseX, mouseY] = d3.pointer(e);
+  setFocusedData(highlightApropriateDot(mouseX, dots, x));
+  handleGuidelinesPositions(
+    mouseX,
+    mouseY,
+    measures,
+    vertGuideLine,
+    horGuideLine
+  );
 };

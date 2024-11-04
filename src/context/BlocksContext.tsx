@@ -1,11 +1,7 @@
 "use client";
 import { fetchEthRewards } from "@src/hooks/useFetch";
 import { useRuntimeEnv } from "@src/hooks/useRuntimeEnv";
-import {
-  Block,
-  BlocksContextProps,
-  DateSpan,
-} from "@src/model/blocks.interface";
+import { Block, DateSpan } from "@src/model/model.interface";
 import { getDateDaysAgo } from "@src/utils/Utils";
 import {
   createContext,
@@ -14,6 +10,13 @@ import {
   useEffect,
   useState,
 } from "react";
+
+type BlocksContextProps = {
+  blocks: Block[] | null;
+  setBlocks: React.Dispatch<React.SetStateAction<Block[] | null>>;
+  dateSpan: DateSpan | null;
+  setDateSpan: React.Dispatch<React.SetStateAction<DateSpan | null>>;
+};
 
 export const BlocksContext = createContext<BlocksContextProps>(
   {} as BlocksContextProps

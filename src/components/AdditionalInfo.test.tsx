@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { expect, test } from "vitest";
 import AdditionalInfo from "./AdditionalInfo";
 import { ThemeContext } from "@src/context/ThemeContext"; // mock ThemeContext
-import { Block } from "@src/model/blocks.interface";
+import { Block } from "@src/model/model.interface";
 
 test("AdditionalInfo; displays skeletons when data is null", () => {
   const { container } = render(

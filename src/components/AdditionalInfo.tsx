@@ -1,6 +1,6 @@
 import { Skeleton } from "@mui/material";
 import { useThemeContext } from "@src/context/ThemeContext";
-import { Block } from "@src/model/blocks.interface";
+import { Block } from "@src/model/model.interface";
 import { currencyFormatterUSD } from "@src/utils/Utils";
 import s from "@styles/additionalInfo.module.scss";
 
