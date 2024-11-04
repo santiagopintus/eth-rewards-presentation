@@ -8,6 +8,7 @@ import s from "@styles/chartContainer.module.scss";
 import AdditionalInfo from "./AdditionalInfo";
 import FocusedBlockData from "./FocusedBlockData";
 
+/** The chart container renders the line plot and the additional info. It handles the loading of the data and the information about the focused block */
 const ChartContainer = () => {
   const { blocks } = useBlocksContext();
   const [focusedData, setFocusedData] = useState<Block | null>(null);

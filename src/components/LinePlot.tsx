@@ -19,6 +19,14 @@ type LinePlotProps = {
   dotRadius?: number;
 };
 
+/**
+ * LinePlot is a React component that visualizes an array of Block data as a line plot using D3.js.
+ * It renders a SVG element with a plot area and a guide line for the X and Y axes.
+ * @prop data - The array of Block data to be plotted.
+ * @prop setFocusedData - A function to set the focused data in the context.
+ * @prop measures - An object with the dimensions of the plot area.
+ * @prop dotRadius - The radius of the dots representing the data points.
+ */
 export default function LinePlot({
   data,
   setFocusedData,

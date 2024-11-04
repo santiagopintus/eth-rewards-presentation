@@ -25,6 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
       </head>
       <body>
+        {/* Normalizing styles */}
         <CssBaseline />
         <PublicEnvProvider>
           <ThemeContextProvider>

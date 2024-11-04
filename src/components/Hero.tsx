@@ -3,6 +3,7 @@ import logo from "@images/eth-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 
+/** Renders the logo and a brief description of the project */
 const Hero = () => {
   return (
     <div className={s.heroContainer}>

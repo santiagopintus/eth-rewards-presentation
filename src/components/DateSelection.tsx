@@ -9,6 +9,8 @@ import { DateSpan } from "@src/model/model.interface";
 import dayjs, { Dayjs } from "dayjs";
 import s from "@styles/dateSelection.module.scss";
 
+/** This component renders the date selection options and date pickers
+ */
 const DateSelection = () => {
   const { dateSpan, setBlocks, setDateSpan } = useBlocksContext();
   const defaultSince = getDateDaysAgo(30);

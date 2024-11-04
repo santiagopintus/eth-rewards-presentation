@@ -3,6 +3,7 @@ import { currencyFormatterUSD, isWindowLessThan } from "@src/utils/Utils";
 import s from "@styles/focusedBlockData.module.scss";
 import React, { useEffect, useState } from "react";
 
+/** Renders a floating card with Date and Reward of the focused block */
 const FocusedBlockData = ({
   reward,
   date,

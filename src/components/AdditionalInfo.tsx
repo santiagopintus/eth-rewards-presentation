@@ -4,6 +4,7 @@ import { Block } from "@src/model/model.interface";
 import { currencyFormatterUSD } from "@src/utils/Utils";
 import s from "@styles/additionalInfo.module.scss";
 
+/** Renders additional info about the data like average, min and max block rewards */
 const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
   /* GET PRIMARY COLOR */
   const { isDarkMode } = useThemeContext();
@@ -13,6 +14,7 @@ const AdditionalInfo = ({ data }: { data: Block[] | null }) => {
     <Skeleton variant="text" width="50px" sx={{ display: "inline-block" }} />
   );
 
+  /** Adds the same style to a given amount */
   const formatAmount = (amount: number, isCurrency = true) => {
     return (
       <span style={{ fontWeight: 700, fontSize: 18, color }}>
