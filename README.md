@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<!-- LOGO -->
+<a href="https://eth-rewards-presentation.vercel.app/">
+  <img src="public/eth-logo.svg" alt="Logo de EthRewards" width="400">
+</a>
 
-## Getting Started
+## Aplicación en producción
 
-First, run the development server:
+Podés ver la aplicación productiva en https://eth-rewards-presentation.vercel.app/
+
+## Instalación y Ejecución local
+
+Sigue estos pasos para correr la aplicación localmente:
+
+1. Cloná el repositorio:
+   `git clone https://github.com/santiagopintus/eth-rewards-presentation`
+2. Navegá al repositorio:
+   `cd eth-rewards-presentation`
+3. Instalá las dependencias:
+   `npm install`
+4. Crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno:
+   [Acá se puede obtener la API KEY gratuita de Bitquery](https://account.bitquery.io/user/api_v1/api_keys)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_API_KEY=<tu_api_key>
+NEXT_PUBLIC_API_BASE_URL=https://graphql.bitquery.io
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Ejecutá el servidor de desarrollo:
+   `npm run dev`
+6. Dirigite a http://localhost:3000 para ver la aplicación en acción.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tecnologías Utilizadas
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- React: Librería de JavaScript para crear interfaces de usuario.
+- Next.js: Framework para desarrollar aplicaciones web sobre React.
+- D3.js: Librería para crear gráficos interactivos.
+- Bitquery: API de datos de Ethereum.
+- Typescript: Lenguaje de programación con tipado estático.
+- Sass: Framework de CSS.
+- Vitest: Framework de pruebas unitarias.
 
-## Learn More
+## Diseño y Desarrollo por:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Santiago Pintus
